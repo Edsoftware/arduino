@@ -1,0 +1,99 @@
+/*
+GPRS Loop Handle
+
+This sketch is used to test seeeduino GPRS_Shield's call answering and 
+reading SMS function.To make it work, you should insert SIM card
+to Seeeduino GPRS Shield,enjoy it!
+
+create on 2015/05/14, version: 1.0
+by lawliet.zou(lawliet.zou@gmail.com)
+*/
+#include <GPRS_Shield_Arduino.h>
+#include <SoftwareSerial.h>
+#include <Wire.h>
+
+#define PIN_TX    7
+#define PIN_RX    8
+#define BAUDRATE  19200
+
+#define MESSAGE_LENGTH 20
+
+
+int s =0;
+char gprsBuffer[64];
+int i = 0;
+
+int inComing = 0;
+
+GPRS gprsTest(PIN_TX,PIN_RX,BAUDRATE);
+
+void setup() {
+  
+  pinMode(11,OUTPUT);
+   pinMode(12,OUTPUT);
+  Serial.begin(19200);
+  while(!gprsTest.init()) {
+      Serial.print("init error\r\n");
+      delay(1000);
+  }
+  delay(3000);  
+  Serial.println("Conectado a la red , ");
+
+   
+   
+}
+
+
+
+void loop() {
+
+  
+  
+while (inComing==0){
+   if(gprsTest.readable()) {
+      
+       //cuando entre una llamada
+      s=1;
+      
+      
+   }else{ 
+   
+   
+    s=0;
+   delay(100);}
+  
+
+ 
+ 
+ 
+  //encender sistema de apagado
+if(s==1){
+   Serial.print("sistema de bloqueo  encendido\r\n");
+ digitalWrite(11, HIGH);
+ 
+    }   
+   
+           
+//sistema apagado
+if(s==0){
+
+   Serial.print("sistema de bloqueo  apagado\r\n");
+ digitalWrite(12, HIGH);
+//resetiando los parametros para reiniciar llamada
+s=0;
+;
+
+}
+         
+       
+  
+ 
+  
+          
+      }    
+       
+                  
+    
+                          
+ //funcion                 
+}
